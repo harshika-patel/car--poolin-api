@@ -18,8 +18,12 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "migrate": "knex migrate:latest",
     "seed": "knex seed:run",
-     "knex": "knex"
+     "knex": "knex", 
+    "start": "node index.js"
   },
+  "engines": {
+  "node": "20.18.0"
+},
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
