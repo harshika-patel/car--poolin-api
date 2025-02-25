@@ -27,7 +27,8 @@ export const registerDriver = async (req, res) => {
     }
 
     // Insert new driver into the database
-    await knex("drivers").insert({
+    const [userId] = await knex("drivers")
+    .insert({
       username,
       password, // Consider hashing the password before storing it
       age,
@@ -36,7 +37,13 @@ export const registerDriver = async (req, res) => {
       model,
       color,
       license_plate_number,
-    });
+    }, 'id'); 
+    await knex("user_logins").insert({
+      username,
+      password,
+      user_id: userId, // Use the ID from drivers table
+      role: "driver" // Since this function is for drivers
+  });
 
     res.status(201).json({ message: "Driver registered successfully!" });
   } catch (err) {

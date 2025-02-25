@@ -25,13 +25,20 @@ export const registerPassenger = async (req, res) => {
     }
 
     // Insert new passenger
-    await knex("passengers").insert({
+    // Insert new driver into the database
+    const [userId]=await knex("passengers").insert({
       username,
       password,
       age,
       phone_number,
-    });
+    }, 'id');
 
+    await knex("user_logins").insert({
+      username,
+      password,
+      user_id: userId, // Use the ID from drivers table
+      role: "passenger" // Since this function is for drivers
+  });
     res.status(201).json({ message: "Passenger registered successfully!" });
   } catch (err) {
     console.error(err);
